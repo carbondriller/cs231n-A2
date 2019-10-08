@@ -86,7 +86,7 @@ class TwoLayerNet(object):
         b2 = self.params['b2'] # (C,)
         
         h, h_cache = affine_relu_forward(X, W1, b1)
-        scores, scores_cache = affine_relu_forward(out, W2, b2)
+        scores, scores_cache = affine_relu_forward(h, W2, b2)
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
