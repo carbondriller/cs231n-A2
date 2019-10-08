@@ -56,7 +56,31 @@ def affine_backward(dout, cache):
     ###########################################################################
     # TODO: Implement the affine backward pass.                               #
     ###########################################################################
-    pass
+    # source: https://github.com/carbondriller/me-learnz-CS231n/blob/master/assignment2/cs231n/layers.py
+    # w
+    # ----+
+    # dw   \
+    #      (*)----+
+    # x    /       \
+    # ----+         \   out
+    # dx            (+)------
+    #               /   dout
+    # b            /
+    # ------------+
+    # db    
+    
+    # + is gradient distributor. So dout would go straight to db and to *
+    db = np.sum(dout, axis=0)
+    
+    # * is gradient switcher. So dw = x dot dout and dx = w dot dout
+    N = x.shape[0]
+    x_re = x.reshape(N, -1) # now x_re can be dot with dout
+    dw = x_re.T.dot(dout) # (D, M)
+    
+    # dx must be (N, d_1, ... , d_k), dout is (N,M) & w is (D,M)
+    dx = dout.dot(w.T) # (N,D)
+    dx = dx.reshape(x.shape) # make it like x: (N, d_1, ... , d_k)
+    
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
