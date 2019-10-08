@@ -125,7 +125,9 @@ def relu_backward(dout, cache):
     ###########################################################################
     # TODO: Implement the ReLU backward pass.                                 #
     ###########################################################################
-    pass
+    # max gate is gradient router. ReLU is a max gate. Only use those values of x that are greater than 0
+    # in numpy, (x>0) is array of booleans with True at positions > 0 and False otherwise
+    dx = (x > 0) * dout
     ###########################################################################
     #                             END OF YOUR CODE                            #
     ###########################################################################
