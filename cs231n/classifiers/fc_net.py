@@ -113,11 +113,13 @@ class TwoLayerNet(object):
         
         dh, dW2, db2 = affine_relu_backward(dscores, scores_cache)
         # perform gradient descent
-        grads['W2'] = dW2 + self.reg*W2
+        # grads['W2'] = dW2 + self.reg*W2
+        grads['W2'] = W2 - self.reg*dW2
         grads['b2'] = db2
         
         dX, dW1, db1 = affine_relu_backward(dh, h_cache)
-        grads['W1'] = dW1 + self.reg*W1
+        # grads['W1'] = dW1 + self.reg*W1
+        grads['W1'] = W1 - self.reg*dW1
         grads['b1'] = db1
         ############################################################################
         #                             END OF YOUR CODE                             #
