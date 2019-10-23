@@ -186,20 +186,18 @@ class FullyConnectedNet(object):
         # beta2, etc. Scale parameters should be initialized to one and shift      #
         # parameters should be initialized to zero.                                #
         ############################################################################
-        hidden_layers = len(hidden_dims)
+        # source: https://github.com/carbondriller/me-learnz-CS231n/blob/master/assignment2/cs231n/classifiers/fc_net.py#L189
+        dims = [input_dim] + hidden_dims + [num_classes]
+        # len(dims) = self.num_layers + 1 = len(hidden_dims) + 1 + 1
         
-        # first hidden layer
-        self.params['W1'] = np.random.normal(0, weight_scale, (input_dim, hidden_dims[0]))
-        self.params['b1'] = np.zeros(hidden_dims[0])
-        
-        # middle hidden layers
-        for i in range(1, hidden_layers - 1):
-            self.params['W' + str(i+1)] = np.random.normal(0, weight_scale, (hidden_dims[i-1], hidden_dims[i]))
-            self.params['b' + str(i+1)] = np.zeros(hidden_dims[i])
-        
-        # last hidden layer
-        self.params['W' + str(hidden_layers)] = np.random.normal(0, weight_scale, (hidden_dims[hidden_layers-1], num_classes))
-        self.params['b' + str(hidden_layers)] = np.zeros(num_classes)
+        for k in range(self.num_layers):
+            s = str(k+1) # Indexing names from 1 instead of 0
+            self.params['W' + s] = np.random.normal(0, weight_scale, (dims[k], dims[k+1]))
+            self.params['b' + s] = np.zeros(dims[k+1])
+            # Batch normalization (the last layer is affine and does not have BN)
+            if self.use_batchnorm and (k < len(hidden_dims)):
+                self.params['gamma' + s] = np.ones(dims[k+1])
+                self.params['beta' + s] = np.zeros(dims[k+1])
         ############################################################################
         #                             END OF YOUR CODE                             #
         ############################################################################
