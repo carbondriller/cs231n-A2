@@ -187,6 +187,7 @@ class FullyConnectedNet(object):
         # parameters should be initialized to zero.                                #
         ############################################################################
         # source: https://github.com/carbondriller/me-learnz-CS231n/blob/master/assignment2/cs231n/classifiers/fc_net.py#L189
+        # concatenate with hidden_dims list
         dims = [input_dim] + hidden_dims + [num_classes]
         # len(dims) = self.num_layers + 1 = len(hidden_dims) + 1 + 1
         
